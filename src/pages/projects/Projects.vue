@@ -1,12 +1,16 @@
 <template>
   <div class="projects">
-    <h1>This is the projects page</h1>
+    <h1>{{ getProjects.title }}</h1>
+    <p>{{ getProjects.description }}</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  
+  computed: {
+    ...mapGetters(['getProjects'])
+  }
 }
 </script>
 

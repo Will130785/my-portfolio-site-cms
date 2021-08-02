@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Blogs from '../pages/Blogs.vue'
-import Current from '../pages/Current.vue'
-import Experience from '../pages/Experience.vue'
-import Freelance from '../pages/Freelance.vue'
+import Blogs from '../pages/blogs/Blogs.vue'
+import Current from '../pages/current/Current.vue'
+import Experience from '../pages/experience/Experience.vue'
+import Freelance from '../pages/freelance/Freelance.vue'
 import Login from '../pages/Login.vue'
 import Profile from '../pages/Profile.vue'
-import Projects from '../pages/Projects.vue'
+import Projects from '../pages/projects/Projects.vue'
 import Register from '../pages/Register.vue'
 
 Vue.use(Router)

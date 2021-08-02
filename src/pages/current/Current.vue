@@ -1,12 +1,16 @@
 <template>
   <div class="current">
-    <h1>This is the current work page</h1>
+    <h1>{{ getCurrent.title }}</h1>
+    <p>{{ getCurrent.description }}</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  
+  computed: {
+    ...mapGetters(['getCurrent'])
+  }
 }
 </script>
 

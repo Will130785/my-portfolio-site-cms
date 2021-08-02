@@ -13,12 +13,30 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import TopBar from './components/navigation/TopBar.vue'
 import SideBar from './components/navigation/SideBar.vue'
 export default {
   components: {
     TopBar,
     SideBar
+  },
+  mounted () {
+    // Populate vuex with data on app load so it is available throughout the application
+    this.setBlogsAction()
+    this.setCurrentAction()
+    this.setExperienceAction()
+    this.setFreelanceAction()
+    this.setProjectsAction()
+  },
+  methods: {
+    ...mapActions([
+      'setBlogsAction',
+      'setCurrentAction',
+      'setExperienceAction',
+      'setFreelanceAction',
+      'setProjectsAction'
+    ])
   }
 }
 </script>
