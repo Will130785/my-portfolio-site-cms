@@ -4,6 +4,7 @@ import blogStore from '../pages/blogs/store'
 import currentStore from '../pages/current/store'
 import experienceStore from '../pages/experience/store'
 import freelanceStore from '../pages/freelance/store'
+import modalStore from '../components/modals/store'
 import navigationStore from '../components/navigation/store'
 import projectsStore from '../pages/projects/store'
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     currentStore,
     experienceStore,
     freelanceStore,
+    modalStore,
     navigationStore,
     projectsStore
   }
