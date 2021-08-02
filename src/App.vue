@@ -28,6 +28,8 @@ export default {
     this.setExperienceAction()
     this.setFreelanceAction()
     this.setProjectsAction()
+
+    console.log(process.env)
   },
   methods: {
     ...mapActions([
