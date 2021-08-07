@@ -58,8 +58,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        VUE_APP_API_BASE: '"http://localhost:8000"'
-        // VUE_APP_API_BASE: '"https://warm-plateau-22448.herokuapp.com/"'
+        // VUE_APP_API_BASE: '"http://localhost:8000"'
+        VUE_APP_API_BASE: '"https://warm-plateau-22448.herokuapp.com/"'
       }
     }),
     new VueLoaderPlugin(),

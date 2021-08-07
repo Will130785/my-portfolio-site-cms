@@ -1,8 +1,10 @@
 <template>
   <div class="blogs">
     <div class="blogs__display">
-      <div v-for="(item, index) in testData" :key="index" class="blog">
+      <div v-for="(item, index) in getBlogs" :key="index" class="blog">
         <p>{{ item.title }}</p>
+        <button>Edit</button>
+        <button @click.prevent="deleteBlog(item._id)">Delete</button>
       </div>
     </div>
     <div class="blogs__options">
@@ -11,11 +13,18 @@
         class="btn"
         @click="showModal"
       >
-        Open Modal
+        Add Blog
       </button>
       <Modal v-show="isModalVisible" @close="closeModal">
         <template v-slot:header>
           Test
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Add entry</label>
+            <input type="text" v-model="blogTitle" />
+            <button @click.prevent="addBlog">Add</button>
+        </div>
         </template>
       </Modal>
     </div>
@@ -23,8 +32,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Modal from '../../components/modals/Modal.vue'
+import BlogService from '../../services/BlogService'
 export default {
   components: {
     Modal
@@ -48,15 +58,32 @@ export default {
           title: 'Blog 4'
         }
       ],
-      isModalVisible: false
+      isModalVisible: false,
+      blogTitle: ''
     }
   },
   methods: {
+    ...mapActions(['setBlogsAction']),
     showModal () {
       this.isModalVisible = true
     },
     closeModal () {
       this.isModalVisible = false
+    },
+    async addBlog () {
+      console.log('You want to add a blog')
+      console.log(this.blogTitle)
+      const data = {
+        title: this.blogTitle
+      }
+      const res = await BlogService.createNewBlog(data)
+      console.log(res.data)
+      this.setBlogsAction()
+    },
+    async deleteBlog (id) {
+      const res = await BlogService.deleteBlog(id)
+      console.log(res.data)
+      this.setBlogsAction()
     }
   }
 }

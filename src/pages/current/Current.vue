@@ -1,19 +1,44 @@
 <template>
   <div class="current">
     <div class="current__display">
-      <div v-for="(item, index) in testData" :key="index" class="job">
+      <div v-for="(item, index) in getCurrent" :key="index" class="job">
         <p>{{ item.title }}</p>
+        <button>Edit</button>
+        <button @click.prevent="deleteCurrent(item._id)">Delete</button>
       </div>
     </div>
     <div class="current__options">
-      Buttons will go here
+      <button
+        type="button"
+        class="btn"
+        @click="showModal"
+      >
+        Add Current
+      </button>
+      <Modal v-show="isModalVisible" @close="closeModal">
+        <template v-slot:header>
+          Test 2
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Add entry</label>
+            <input type="text" v-model="currentTitle" />
+            <button @click.prevent="addCurrent">Add</button>
+        </div>
+        </template>
+      </Modal>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import Modal from '../../components/modals/Modal.vue'
+import CurrentService from '../../services/CurrentService'
 export default {
+  components: {
+    Modal
+  },
   computed: {
     ...mapGetters(['getCurrent'])
   },
@@ -32,7 +57,34 @@ export default {
         {
           title: 'Current 4'
         }
-      ]
+      ],
+      isModalVisible: false,
+      currentTitle: ''
+    }
+  },
+  methods: {
+    ...mapActions(['setCurrentAction']),
+    showModal () {
+      this.isModalVisible = true
+    },
+    closeModal () {
+      this.isModalVisible = false
+    },
+    async addCurrent () {
+      console.log('You want to add current job')
+      // Create data object
+      const data = {
+        title: this.currentTitle
+      }
+      const res = await CurrentService.createNewCurrent(data)
+      console.log(res)
+      this.setCurrentAction()
+    },
+    async deleteCurrent (id) {
+      console.log('You want to delete')
+      const res = await CurrentService.deleteCurrent(id)
+      console.log(res)
+      this.setCurrentAction()
     }
   }
 }

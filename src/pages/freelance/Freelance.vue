@@ -1,19 +1,44 @@
 <template>
   <div class="freelance">
     <div class="freelance__display">
-      <div v-for="(item, index) in testData" :key="index" class="freelance-job">
+      <div v-for="(item, index) in getFreelance" :key="index" class="freelance-job">
         <p>{{ item.title }}</p>
+        <button>Edit</button>
+        <button @click.prevent="deleteFreelance(item._id)">Delete</button>
       </div>
     </div>
     <div class="freelance__options">
-      Buttons will go here
+      <button
+        type="button"
+        class="btn"
+        @click="showModal"
+      >
+        Add Freelance
+      </button>
+      <Modal v-show="isModalVisible" @close="closeModal">
+        <template v-slot:header>
+          Test 4
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Add entry</label>
+            <input type="text" v-model="freelanceTitle" />
+            <button @click.prevent="addFreelance">Add</button>
+        </div>
+        </template>
+      </Modal>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import Modal from '../../components/modals/Modal.vue'
+import FreelanceService from '../../services/FreelanceService'
 export default {
+  components: {
+    Modal
+  },
   computed: {
     ...mapGetters(['getFreelance'])
   },
@@ -32,7 +57,34 @@ export default {
         {
           title: 'Freelance 4'
         }
-      ]
+      ],
+      isModalVisible: false,
+      freelanceTitle: ''
+    }
+  },
+  methods: {
+    ...mapActions(['setFreelanceAction']),
+    showModal () {
+      this.isModalVisible = true
+    },
+    closeModal () {
+      this.isModalVisible = false
+    },
+    async addFreelance () {
+      console.log('You want to add freelance work')
+      // Create data object
+      const data = {
+        title: this.freelanceTitle
+      }
+      const res = await FreelanceService.createNewFreelance(data)
+      console.log(res)
+      this.setFreelanceAction()
+
+    },
+    async deleteFreelance (id) {
+      const res = await FreelanceService.deleteFreelance(id)
+      console.log(res)
+      this.setFreelanceAction()
     }
   }
 }

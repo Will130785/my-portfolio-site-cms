@@ -1,19 +1,44 @@
 <template>
   <div class="experience">
     <div class="experience__display">
-      <div v-for="(item, index) in testData" :key="index" class="work">
+      <div v-for="(item, index) in getExperience" :key="index" class="work">
         <p>{{ item.title }}</p>
+        <button>Edit</button>
+        <button @click.prevent="deleteWork(item._id)">Delete</button>
       </div>
     </div>
     <div class="experience__options">
-      Buttons will go here
+      <button
+        type="button"
+        class="btn"
+        @click="showModal"
+      >
+        Add Work
+      </button>
+      <Modal v-show="isModalVisible" @close="closeModal">
+        <template v-slot:header>
+          Test 3
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Add entry</label>
+            <input type="text" v-model="workTitle" />
+            <button @click.prevent="addWork">Add</button>
+        </div>
+        </template>
+      </Modal>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import Modal from '../../components/modals/Modal.vue'
+import ExperienceService from '../../services/ExperienceService'
 export default {
+  components: {
+    Modal
+  },
   computed: {
     ...mapGetters(['getExperience'])
   },
@@ -32,7 +57,33 @@ export default {
         {
           title: 'Experience 4'
         }
-      ]
+      ],
+      isModalVisible: false,
+      workTitle: ''
+    }
+  },
+  methods: {
+    ...mapActions(['setExperienceAction']),
+    showModal () {
+      this.isModalVisible = true
+    },
+    closeModal () {
+      this.isModalVisible = false
+    },
+    async addWork () {
+      console.log('You want to add work')
+      // Create data object
+      const data = {
+        title: this.workTitle
+      }
+      const res = await ExperienceService.createNewExperience(data)
+      console.log(res)
+      this.setExperienceAction()
+    },
+    async deleteWork (id) {
+      const res = await ExperienceService.deleteExperience(id)
+      console.log(res)
+      this.setExperienceAction()
     }
   }
 }

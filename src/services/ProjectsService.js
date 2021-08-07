@@ -1,5 +1,6 @@
 import apiClient from './api'
 
+// Get all projects
 const getAllProjects = async () => {
   try {
     const res = await apiClient().get('/projects')
@@ -11,6 +12,32 @@ const getAllProjects = async () => {
   }
 }
 
+// Create new project
+const createNewProject = async (data) => {
+  try {
+    const res = await apiClient().post('/projects', data)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+// Delete project
+const deleteProject = async (id) => {
+  try {
+    const res = await apiClient().delete(`/projects/${id}`)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export default {
-  getAllProjects
+  getAllProjects,
+  createNewProject,
+  deleteProject
 }
