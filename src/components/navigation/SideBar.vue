@@ -1,5 +1,5 @@
 <template>
-  <nav class="sidebar" :class="{ 'sidebar-active': getSidebarStatus }">
+  <nav v-if="isLoggedIn" class="sidebar" :class="{ 'sidebar-active': getSidebarStatus }">
     <ul class="sidebar__links">
       <li class="sidebar__link"
         v-for="(link, index) in testGetLinks"
@@ -14,7 +14,7 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapGetters(['testGetLinks', 'getSidebarStatus'])
+    ...mapGetters(['testGetLinks', 'getSidebarStatus', 'isLoggedIn'])
   },
   methods: {
     ...mapActions(['sidebarStatusAction'])

@@ -7,6 +7,8 @@ import freelanceStore from '../pages/freelance/store'
 import modalStore from '../components/modals/store'
 import navigationStore from '../components/navigation/store'
 import projectsStore from '../pages/projects/store'
+import registerStore from '../pages/register/store'
+import loginStore from '../pages/login/store'
 
 Vue.use(Vuex)
 
@@ -22,6 +24,8 @@ export default new Vuex.Store({
     freelanceStore,
     modalStore,
     navigationStore,
-    projectsStore
+    projectsStore,
+    registerStore,
+    loginStore
   }
 })
