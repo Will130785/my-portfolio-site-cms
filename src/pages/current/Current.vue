@@ -3,8 +3,21 @@
     <div class="current__display">
       <div v-for="(item, index) in getCurrent" :key="index" class="job">
         <p>{{ item.title }}</p>
-        <button>Edit</button>
+        <button @click.prevent="handleEditModal('current-modal-' + index, item)">Edit</button>
         <button @click.prevent="deleteCurrent(item._id)">Delete</button>
+        <!-- Edit current modal -->
+        <Modal v-show="isEditModalVisible === 'current-modal-' + index" @close="closeEditModal">
+        <template v-slot:header>
+          {{ item.title }}, {{ item._id }}
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Edit entry</label>
+            <input type="text" v-model="currentTitle" />
+            <button @click.prevent="editCurrent(item._id)">Edit</button>
+        </div>
+        </template>
+      </Modal>
       </div>
     </div>
     <div class="current__options">
@@ -59,7 +72,8 @@ export default {
         }
       ],
       isModalVisible: false,
-      currentTitle: ''
+      currentTitle: '',
+      isEditModalVisible: ''
     }
   },
   methods: {
@@ -84,6 +98,23 @@ export default {
       console.log('You want to delete')
       const res = await CurrentService.deleteCurrent(id)
       console.log(res)
+      this.setCurrentAction()
+    },
+    handleEditModal (modal, item) {
+      console.log(modal)
+      this.isEditModalVisible = modal
+      this.currentTitle = item.title
+    },
+    closeEditModal () {
+      this.isEditModalVisible = ''
+    },
+    async editCurrent (id) {
+      console.log('You want to update' + id)
+      const data = {
+        title: this.currentTitle
+      }
+      const res = await CurrentService.updateCurrent(id, data)
+      console.log(res.data)
       this.setCurrentAction()
     }
   }

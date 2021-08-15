@@ -3,8 +3,21 @@
     <div class="freelance__display">
       <div v-for="(item, index) in getFreelance" :key="index" class="freelance-job">
         <p>{{ item.title }}</p>
-        <button>Edit</button>
+        <button @click.prevent="handleEditModal('freelance-modal-' + index, item)">Edit</button>
         <button @click.prevent="deleteFreelance(item._id)">Delete</button>
+        <!-- Edit freelance modal -->
+        <Modal v-show="isEditModalVisible === 'freelance-modal-' + index" @close="closeEditModal">
+        <template v-slot:header>
+          {{ item.title }}, {{ item._id }}
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Edit entry</label>
+            <input type="text" v-model="freelanceTitle" />
+            <button @click.prevent="editFreelance(item._id)">Edit</button>
+        </div>
+        </template>
+      </Modal>
       </div>
     </div>
     <div class="freelance__options">
@@ -59,7 +72,8 @@ export default {
         }
       ],
       isModalVisible: false,
-      freelanceTitle: ''
+      freelanceTitle: '',
+      isEditModalVisible: ''
     }
   },
   methods: {
@@ -84,6 +98,23 @@ export default {
     async deleteFreelance (id) {
       const res = await FreelanceService.deleteFreelance(id)
       console.log(res)
+      this.setFreelanceAction()
+    },
+    handleEditModal (modal, item) {
+      console.log(modal)
+      this.isEditModalVisible = modal
+      this.freelanceTitle = item.title
+    },
+    closeEditModal () {
+      this.isEditModalVisible = ''
+    },
+    async editFreelance (id) {
+      console.log('You want to update' + id)
+      const data = {
+        title: this.freelanceTitle
+      }
+      const res = await FreelanceService.updateFreelance(id, data)
+      console.log(res.data)
       this.setFreelanceAction()
     }
   }

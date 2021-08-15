@@ -3,8 +3,21 @@
     <div class="experience__display">
       <div v-for="(item, index) in getExperience" :key="index" class="work">
         <p>{{ item.title }}</p>
-        <button>Edit</button>
+        <button @click.prevent="handleEditModal('experience-modal-' + index, item)">Edit</button>
         <button @click.prevent="deleteWork(item._id)">Delete</button>
+        <!-- Edit experience modal -->
+        <Modal v-show="isEditModalVisible === 'experience-modal-' + index" @close="closeEditModal">
+        <template v-slot:header>
+          {{ item.title }}, {{ item._id }}
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Edit entry</label>
+            <input type="text" v-model="workTitle" />
+            <button @click.prevent="editExperience(item._id)">Edit</button>
+        </div>
+        </template>
+      </Modal>
       </div>
     </div>
     <div class="experience__options">
@@ -59,7 +72,8 @@ export default {
         }
       ],
       isModalVisible: false,
-      workTitle: ''
+      workTitle: '',
+      isEditModalVisible: ''
     }
   },
   methods: {
@@ -83,6 +97,23 @@ export default {
     async deleteWork (id) {
       const res = await ExperienceService.deleteExperience(id)
       console.log(res)
+      this.setExperienceAction()
+    },
+    handleEditModal (modal, item) {
+      console.log(modal)
+      this.isEditModalVisible = modal
+      this.workTitle = item.title
+    },
+    closeEditModal () {
+      this.isEditModalVisible = ''
+    },
+    async editExperience (id) {
+      console.log('You want to update' + id)
+      const data = {
+        title: this.workTitle
+      }
+      const res = await ExperienceService.updateExperience(id, data)
+      console.log(res.data)
       this.setExperienceAction()
     }
   }

@@ -24,6 +24,18 @@ const createNewFreelance = async (data) => {
   }
 }
 
+// Update freelance
+const updateFreelance = async (id, data) => {
+  try {
+    const res = await apiClient().put(`/freelance/${id}`, data)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Delete freelance
 const deleteFreelance = async (id) => {
   try {
@@ -39,5 +51,6 @@ const deleteFreelance = async (id) => {
 export default {
   getAllFreelance,
   createNewFreelance,
+  updateFreelance,
   deleteFreelance
 }

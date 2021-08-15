@@ -24,6 +24,19 @@ const createNewBlog = async (data) => {
   }
 }
 
+// Update blog
+const updateBlog = async (id, data) => {
+  try {
+    console.log(data)
+    const res = await apiClient().put(`/blogs/${id}`, data)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Delete blog
 const deleteBlog = async (id) => {
   try {
@@ -39,5 +52,6 @@ const deleteBlog = async (id) => {
 export default {
   getAllBlogs,
   createNewBlog,
+  updateBlog,
   deleteBlog
 }

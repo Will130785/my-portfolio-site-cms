@@ -24,6 +24,18 @@ const createNewExperience = async (data) => {
   }
 }
 
+// Update experience
+const updateExperience = async (id, data) => {
+  try {
+    const res = await apiClient().put(`/experience/${id}`, data)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Delete experience
 const deleteExperience = async (id) => {
   try {
@@ -39,5 +51,6 @@ const deleteExperience = async (id) => {
 export default {
   getAllExperience,
   createNewExperience,
+  updateExperience,
   deleteExperience
 }

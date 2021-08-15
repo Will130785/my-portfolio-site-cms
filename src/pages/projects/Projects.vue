@@ -3,8 +3,21 @@
     <div class="projects__display">
       <div v-for="(item, index) in getProjects" :key="index" class="project">
         <p>{{ item.title }}</p>
-        <button>Edit</button>
+        <button @click.prevent="handleEditModal('project-modal-' + index, item)">Edit</button>
         <button @click.prevent="deleteProject(item._id)">Delete</button>
+        <!-- Edit project modal -->
+        <Modal v-show="isEditModalVisible === 'project-modal-' + index" @close="closeEditModal">
+        <template v-slot:header>
+          {{ item.title }}, {{ item._id }}
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Edit entry</label>
+            <input type="text" v-model="projectTitle" />
+            <button @click.prevent="editProject(item._id)">Edit</button>
+        </div>
+        </template>
+      </Modal>
       </div>
     </div>
     <div class="projects__options">
@@ -59,7 +72,8 @@ export default {
         }
       ],
       isModalVisible: false,
-      projectTitle: ''
+      projectTitle: '',
+      isEditModalVisible: ''
     }
   },
   methods: {
@@ -83,6 +97,23 @@ export default {
     async deleteProject (id) {
       const res = await ProjectService.deleteProject(id)
       console.log(res)
+      this.setProjectsAction()
+    },
+    handleEditModal (modal, item) {
+      console.log(modal)
+      this.isEditModalVisible = modal
+      this.projectTitle = item.title
+    },
+    closeEditModal () {
+      this.isEditModalVisible = ''
+    },
+    async editProject (id) {
+      console.log('You want to update' + id)
+      const data = {
+        title: this.projectTitle
+      }
+      const res = await ProjectService.updateProject(id, data)
+      console.log(res.data)
       this.setProjectsAction()
     }
   }

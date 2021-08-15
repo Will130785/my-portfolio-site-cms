@@ -24,6 +24,18 @@ const createNewCurrent = async (data) => {
   }
 }
 
+// Update current
+const updateCurrent = async (id, data) => {
+  try {
+    const res = await apiClient().put(`/current/${id}`, data)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Delete current
 const deleteCurrent = async (id) => {
   try {
@@ -39,5 +51,6 @@ const deleteCurrent = async (id) => {
 export default {
   getAllCurrent,
   createNewCurrent,
+  updateCurrent,
   deleteCurrent
 }

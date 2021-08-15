@@ -3,8 +3,21 @@
     <div class="blogs__display">
       <div v-for="(item, index) in getBlogs" :key="index" class="blog">
         <p>{{ item.title }}</p>
-        <button>Edit</button>
+        <button @click.prevent="handleEditModal('blog-modal-' + index, item)">Edit</button>
         <button @click.prevent="deleteBlog(item._id)">Delete</button>
+        <!-- Edit blog modal -->
+        <Modal v-show="isEditModalVisible === 'blog-modal-' + index" @close="closeEditModal">
+        <template v-slot:header>
+          {{ item.title }}, {{ item._id }}
+        </template>
+        <template v-slot:body>
+          <div class="form-group">
+            <label>Edit entry</label>
+            <input type="text" v-model="blogTitle" />
+            <button @click.prevent="editBlog(item._id)">Edit</button>
+        </div>
+        </template>
+      </Modal>
       </div>
     </div>
     <div class="blogs__options">
@@ -59,7 +72,8 @@ export default {
         }
       ],
       isModalVisible: false,
-      blogTitle: ''
+      blogTitle: '',
+      isEditModalVisible: ''
     }
   },
   methods: {
@@ -82,6 +96,23 @@ export default {
     },
     async deleteBlog (id) {
       const res = await BlogService.deleteBlog(id)
+      console.log(res.data)
+      this.setBlogsAction()
+    },
+    handleEditModal (modal, item) {
+      console.log(modal)
+      this.isEditModalVisible = modal
+      this.blogTitle = item.title
+    },
+    closeEditModal () {
+      this.isEditModalVisible = ''
+    },
+    async editBlog (id) {
+      console.log('You want to update' + id)
+      const data = {
+        title: this.blogTitle
+      }
+      const res = await BlogService.updateBlog(id, data)
       console.log(res.data)
       this.setBlogsAction()
     }

@@ -24,6 +24,18 @@ const createNewProject = async (data) => {
   }
 }
 
+// Update project
+const updateProject = async (id, data) => {
+  try {
+    const res = await apiClient().put(`/projects/${id}`, data)
+    if (res && res.data) {
+      return res
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // Delete project
 const deleteProject = async (id) => {
   try {
@@ -39,5 +51,6 @@ const deleteProject = async (id) => {
 export default {
   getAllProjects,
   createNewProject,
+  updateProject,
   deleteProject
 }
