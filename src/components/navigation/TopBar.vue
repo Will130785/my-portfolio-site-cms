@@ -1,6 +1,7 @@
 <template>
   <nav class="topbar">
     <button @click="sidebarStatusAction">Toggle Sidebar</button>
+    <span @click.prevent="handleLogout">Logout</span>
   </nav>
 </template>
 
@@ -8,8 +9,12 @@
 import { mapActions } from 'vuex'
 export default {
   methods: {
-    ...mapActions(['sidebarStatusAction'])
+    ...mapActions(['sidebarStatusAction', 'logout']),
+    handleLogout () {
+    console.log('logging out')
+    this.logout()
   }
+  },
 }
 </script>
 
